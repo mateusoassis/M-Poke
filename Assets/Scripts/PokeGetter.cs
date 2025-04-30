@@ -1,17 +1,17 @@
 using System.Net;
 using System.Net.Cache;
-using System;
 using System.Security.AccessControl;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PokeGetter : MonoBehaviour
 {
-    [SerializeField] private string url = "https://pokeapi.co/api/v2/pokemon/ditto";
-    public List<string> listaPokemonComMoves = new List<string>();
+    [SerializeField] private string url = "https://pokeapi.co/api/v2/pokemon/";
     public pokemonInfoCustom pokeInfoCustom;
+    public int randomPokemonIndex;
 
     [System.Serializable]
     public class PokeData
@@ -59,6 +59,12 @@ public class PokeGetter : MonoBehaviour
     {
         public string pokeName;
         public List<MoveData> pokeMoves;
+        public Sprites enemy_front;
+        public Sprites user_back;
+        public Image enemySprite;
+        public Image playerSprite;
+        public string front_url;
+        public string back_url;
     }
 
     [System.Serializable]
@@ -72,6 +78,8 @@ public class PokeGetter : MonoBehaviour
     void Awake()
     {
         pokeInfoCustom.pokeMoves = new List<MoveData>{null, null, null, null};
+        randomPokemonIndex = Random.Range(1,600);
+        url += randomPokemonIndex;
     }
     void Start()
     {
@@ -95,6 +103,40 @@ public class PokeGetter : MonoBehaviour
             Debug.Log("Erro: " + request.error);
         }
     }
+
+    IEnumerator UpdateEnemySprite(string url)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        yield return request.SendWebRequest();
+
+        if(request.result == UnityWebRequest.Result.Success)
+        {
+            Texture2D texture = DownloadHandlerTexture.GetContent(request);
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            pokeInfoCustom.enemySprite.sprite = sprite;
+        }
+        else
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+    }
+    IEnumerator UpdatePlayerSprite(string url)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        yield return request.SendWebRequest();
+
+        if(request.result == UnityWebRequest.Result.Success)
+        {
+            Texture2D texture = DownloadHandlerTexture.GetContent(request);
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            pokeInfoCustom.playerSprite.sprite = sprite;
+        }
+        else
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+    }
+
     IEnumerator GetPokeData(string url)
     {
         UnityWebRequest request = UnityWebRequest.Get(url);
@@ -106,6 +148,10 @@ public class PokeGetter : MonoBehaviour
             PokeData pokemonInfo = JsonUtility.FromJson<PokeData>(request.downloadHandler.text);
             // Debug.Log(pokemonInfo.name);
             pokeInfoCustom.pokeName = pokemonInfo.name;
+            pokeInfoCustom.front_url = pokemonInfo.sprites.front_default;
+            StartCoroutine(UpdateEnemySprite(pokeInfoCustom.front_url));
+            pokeInfoCustom.back_url = pokemonInfo.sprites.back_default;
+            StartCoroutine(UpdatePlayerSprite(pokeInfoCustom.back_url));
             // pokeInfoCustom.pokeMoves.Add(pokemonInfo.moves[i].move.name);
             if(pokemonInfo.moves.Length > 4)
             {
@@ -139,31 +185,6 @@ public class PokeGetter : MonoBehaviour
                     }
                 }
             }
-                
-            // }
-            // listaPokemonComMoves.Add(pokemonInfo.name);
-            // if(pokemonInfo.moves.Length > 4)
-            // {
-            //     for(int i = 0; i < 4; i++)
-            //     {
-            //         listaPokemonComMoves.Add(pokemonInfo.moves[i].move.name);
-            //     }
-            // }
-            // else if(pokemonInfo.moves.Length <= 3)
-            // {
-            //     for(int i = 0; i < 4; i++)
-            //     {
-            //         if (i+1 <= pokemonInfo.moves.Length)
-            //         {
-            //             listaPokemonComMoves.Add(pokemonInfo.moves[i].move.name);
-            //         }
-            //         else
-            //         {
-            //             listaPokemonComMoves.Add("--");
-            //         }
-            //     }
-                
-            // }
         }
         else
         {
