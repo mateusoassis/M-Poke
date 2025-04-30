@@ -92,7 +92,7 @@ public class PokeGetter : MonoBehaviour
 
         if(request.result == UnityWebRequest.Result.Success)
         {
-            // saveMoveData.Add(getMoveData);
+            // saveMoveData.Add(getMoveData);a
             MoveStats moveStats = JsonUtility.FromJson<MoveStats>(request.downloadHandler.text);
             getMoveData.pp = moveStats.pp;
             getMoveData.type = moveStats.type.name;
@@ -103,7 +103,7 @@ public class PokeGetter : MonoBehaviour
             Debug.Log("Erro: " + request.error);
         }
     }
-
+   
     IEnumerator UpdateEnemySprite(string url)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
