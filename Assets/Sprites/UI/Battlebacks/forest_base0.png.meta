@@ -116,12 +116,12 @@ TextureImporter:
       name: forest_base0_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 512
-        height: 38
+        x: 130
+        y: 6
+        width: 275
+        height: 33
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 9c228dff8b3ba024aa4e7e10f46352d3
     internalID: 0
     vertices: []
     indices: 
@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      forest_base0_0: -53367342539762727
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
