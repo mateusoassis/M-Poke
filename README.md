@@ -35,7 +35,7 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 
 ## 📦 Tecnologias utilizadas
 
-- Unity 2022
+- Unity 6 (6000.1.0f1)
 - C#
 - TextMeshPro
 - PokéAPI (https://pokeapi.co/)
