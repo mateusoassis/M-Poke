@@ -45,8 +45,6 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 
 ---
 
----
-
 ## 🖥️ Build para Windows
 
 Uma versão executável está disponível no repositório para facilitar testes, localizada na pasta [`Builds/Build_Windows`](./Builds/Build_Windows).
