@@ -120,7 +120,7 @@ public class PokemonsPicker : MonoBehaviour
                 else
                 {
                     MoveData moveData = new MoveData();
-                    moveData.name = "--";
+                    moveData.name = "-";
                     moveData.pp = 0;
                     moveData.type = " ";
                     pokeInfoCustom.pokeMoves[i] = moveData;
