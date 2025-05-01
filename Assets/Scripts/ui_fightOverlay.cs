@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class ui_fightOverlay : MonoBehaviour
 {
@@ -8,101 +9,118 @@ public class ui_fightOverlay : MonoBehaviour
     [SerializeField] private int index;
     [SerializeField] private TextMeshProUGUI ppTexts;
     [SerializeField] private TextMeshProUGUI typeTexts;
-    [SerializeField] private TextMeshProUGUI[] moveTexts;
+    public TextMeshProUGUI[] moveTexts;
+    [SerializeField] private PokemonsPicker pokeData;
 
-    void Start()
+    void OnEnable()
     {
         UpdateArrowsAndMoves();
+        UpdateMovesNames();
     }
 
     void Update()
     {
-        // 0 1
-        // 2 3
-        if(Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if(index == 0)
+            // 0 1
+            // 2 3
+            if(Input.GetKeyDown(KeyCode.DownArrow))
             {
-                index = 2;
+                if(index == 0)
+                {
+                    index = 2;
+                }
+                else if(index == 1)
+                {
+                    index = 3;
+                }
+                else if(index == 2)
+                {
+                    index = 0;
+                }
+                else if(index == 3)
+                {
+                    index = 1;
+                }
+                UpdateArrowsAndMoves();
             }
-            else if(index == 1)
+            else if(Input.GetKeyDown(KeyCode.UpArrow))
             {
-                index = 3;
+                if(index == 0)
+                {
+                    index = 2;
+                }
+                else if(index == 1)
+                {
+                    index = 3;
+                }
+                else if(index == 2)
+                {
+                    index = 0;
+                }
+                else if(index == 3)
+                {
+                    index = 1;
+                }
+                UpdateArrowsAndMoves();
             }
-            else if(index == 2)
+            else if(Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                index = 0;
+                if(index == 0)
+                {
+                    index = 1;
+                }
+                else if(index == 1)
+                {
+                    index = 0;
+                }
+                else if(index == 2)
+                {
+                    index = 3;
+                }
+                else if(index == 3)
+                {
+                    index = 2;
+                }
+                UpdateArrowsAndMoves();
             }
-            else if(index == 3)
+            else if(Input.GetKeyDown(KeyCode.RightArrow))
             {
-                index = 1;
+                if(index == 0)
+                {
+                    index = 1;
+                }
+                else if(index == 1)
+                {
+                    index = 0;
+                }
+                else if(index == 2)
+                {
+                    index = 3;
+                }
+                else if(index == 3)
+                {
+                    index = 2;
+                }
+                UpdateArrowsAndMoves();
             }
-            UpdateArrowsAndMoves();
+            else if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                ShowMainBattleOverlay();
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.UpArrow))
+    }
+
+    public void PullingMovesInfo(int i)
+    {
+        if(pokeData.pokeInfoCustomPlayer.pokeMoves[i].pp == 0)
         {
-            if(index == 0)
-            {
-                index = 2;
-            }
-            else if(index == 1)
-            {
-                index = 3;
-            }
-            else if(index == 2)
-            {
-                index = 0;
-            }
-            else if(index == 3)
-            {
-                index = 1;
-            }
-            UpdateArrowsAndMoves();
+            ppTexts.text = " ";
         }
-        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        else
         {
-            if(index == 0)
-            {
-                index = 1;
-            }
-            else if(index == 1)
-            {
-                index = 0;
-            }
-            else if(index == 2)
-            {
-                index = 3;
-            }
-            else if(index == 3)
-            {
-                index = 2;
-            }
-            UpdateArrowsAndMoves();
+            ppTexts.text = pokeData.pokeInfoCustomPlayer.pokeMoves[i].pp + "/" + pokeData.pokeInfoCustomPlayer.pokeMoves[i].pp;
         }
-        else if(Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if(index == 0)
-            {
-                index = 1;
-            }
-            else if(index == 1)
-            {
-                index = 0;
-            }
-            else if(index == 2)
-            {
-                index = 3;
-            }
-            else if(index == 3)
-            {
-                index = 2;
-            }
-            UpdateArrowsAndMoves();
-        }
-        else if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            ShowMainBattleOverlay();
-        }
+        typeTexts.text = pokeData.pokeInfoCustomPlayer.pokeMoves[i].type.ToUpper();
     }
 
     public void UpdateArrowsAndMoves()
@@ -112,11 +130,20 @@ public class ui_fightOverlay : MonoBehaviour
             if(i == index)
             {
                 setas[i].SetActive(true);
+                PullingMovesInfo(index);
             }
             else
             {
                 setas[i].SetActive(false);
             }
+        }
+    }
+
+    public void UpdateMovesNames()
+    {
+        for (int i = 0; i < setas.Length; i++)
+        {
+            moveTexts[i].text = pokeData.pokeInfoCustomPlayer.pokeMoves[i].name.ToUpper();
         }
     }
 

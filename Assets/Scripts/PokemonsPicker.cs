@@ -9,22 +9,42 @@ using UnityEngine.UI;
 
 public class PokemonsPicker : MonoBehaviour
 {
+    [SerializeField] private GameObject errorPanel;
+    [SerializeField] private Fade fadeOut;
+    [SerializeField] private ui_fightOverlay fightOverlay;
     [SerializeField] private string url = "https://pokeapi.co/api/v2/pokemon/";
     [Header("Player")]
     [SerializeField] private int playerPokemonIndex;
     [SerializeField] private string playerUrl;
     public PokemonInfoCustom pokeInfoCustomPlayer;
     [SerializeField] private Image playerImage;
+    public bool playerMoveDone = false;
+    public bool playerImageDone = false;
 
     [Header("Enemy")]
     [SerializeField] private int enemyPokemonIndex;
     [SerializeField] private string enemyUrl;
     public PokemonInfoCustom pokeInfoCustomEnemy;
     [SerializeField] private Image enemyImage;
+    public bool enemyMoveDone = false;
+    public bool enemyImageDone = false;
 
     void Awake()
     {
         InitialSetup();
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(fadeOut.FadeNow());
+        }
+    }
+
+    private void ErrorPanelShow()
+    {
+        errorPanel.SetActive(true);
     }
 
     private void InitialSetup()
@@ -32,18 +52,17 @@ public class PokemonsPicker : MonoBehaviour
         pokeInfoCustomPlayer.pokeMoves = new List<MoveData>{null, null, null, null};
         playerPokemonIndex = Random.Range(1,601);
         playerUrl = url + playerPokemonIndex;
+        pokeInfoCustomPlayer.level = Random.Range(10, 91);
+        pokeInfoCustomPlayer.hp = 0;
 
         pokeInfoCustomEnemy.pokeMoves = new List<MoveData>{null, null, null, null};
         enemyPokemonIndex = Random.Range(1,601);
         enemyUrl = url + enemyPokemonIndex;
+        pokeInfoCustomEnemy.level = Random.Range(10, 91);
+        pokeInfoCustomEnemy.hp = 0;
 
         StartCoroutine(GetPokeDataPlayer(playerUrl, pokeInfoCustomPlayer, playerImage));
         StartCoroutine(GetPokeDataEnemy(enemyUrl, pokeInfoCustomEnemy, enemyImage));
-    }
-
-    void Start()
-    {
-        
     }
 
     IEnumerator GetPokeDataPlayer(string url, PokemonInfoCustom pokeInfoCustom, Image image)
@@ -57,32 +76,39 @@ public class PokemonsPicker : MonoBehaviour
 
             pokeInfoCustom.pokeName = pokemonInfo.name;
             pokeInfoCustom.back_url = pokemonInfo.sprites.back_default;
-            StartCoroutine(UpdateSprite(pokeInfoCustom.back_url, image));
+            StartCoroutine(UpdateSpritePlayer(pokeInfoCustom.back_url, image));
+
+            foreach (var stat_line in pokemonInfo.stats)
+            {
+                if(stat_line.stat.name == "hp")
+                {
+                    pokeInfoCustomPlayer.hp = (int)((2 * stat_line.base_stat * pokeInfoCustom.level)/100) + pokeInfoCustom.level + 10;
+                    break;
+                }
+            }
 
             for (int i = 0; i < 4; i++)
             {
-                if(pokemonInfo.moves.Length > 4)
+                if(i < pokemonInfo.moves.Length)
                 {
-                    if (i+1 <= pokemonInfo.moves.Length)
-                    {
-                        MoveData moveData = new MoveData();
-                        moveData.name = pokemonInfo.moves[i].move.name;
-                        StartCoroutine(GetMoveDataAndSave(moveData, pokemonInfo.moves[i].move.url, pokeInfoCustom.pokeMoves, i));
-                    }
-                    else if(pokemonInfo.moves.Length <= 3)
-                    {
-                        MoveData moveData = new MoveData();
-                        moveData.name = "--";
-                        moveData.pp = 0;
-                        moveData.type = " ";
-                        pokeInfoCustom.pokeMoves[i] = moveData;
-                    }
+                    MoveData moveData = new MoveData();
+                    moveData.name = pokemonInfo.moves[i].move.name;
+                    StartCoroutine(GetMoveDataAndSavePlayer(moveData, pokemonInfo.moves[i].move.url, pokeInfoCustom.pokeMoves, i));
+                }
+                else
+                {
+                    MoveData moveData = new MoveData();
+                    moveData.name = "--";
+                    moveData.pp = 0;
+                    moveData.type = " ";
+                    pokeInfoCustom.pokeMoves[i] = moveData;
                 }
             }
         }
         else
         {
             Debug.Log("Erro: " + request.error);
+            ErrorPanelShow();
         }
     }
     
@@ -98,36 +124,46 @@ public class PokemonsPicker : MonoBehaviour
 
             pokeInfoCustom.pokeName = pokemonInfo.name;
             pokeInfoCustom.front_url = pokemonInfo.sprites.front_default;
-            StartCoroutine(UpdateSprite(pokeInfoCustom.front_url, image));
+            StartCoroutine(UpdateSpriteEnemy(pokeInfoCustom.front_url, image));
 
-            for (int i = 0; i < 4; i++)
+            foreach (var stat_line in pokemonInfo.stats)
             {
-                if(pokemonInfo.moves.Length > 4)
+                if(stat_line.stat.name == "hp")
                 {
-                    if (i+1 <= pokemonInfo.moves.Length)
-                    {
-                        MoveData moveData = new MoveData();
-                        moveData.name = pokemonInfo.moves[i].move.name;
-                        StartCoroutine(GetMoveDataAndSave(moveData, pokemonInfo.moves[i].move.url, pokeInfoCustom.pokeMoves, i));
-                    }
-                    else if(pokemonInfo.moves.Length <= 3)
-                    {
-                        MoveData moveData = new MoveData();
-                        moveData.name = "--";
-                        moveData.pp = 0;
-                        moveData.type = " ";
-                        pokeInfoCustom.pokeMoves[i] = moveData;
-                    }
+                    pokeInfoCustomEnemy.hp = (int)((2 * stat_line.base_stat)/100) + pokeInfoCustom.level + 10;
+                    break;
                 }
             }
+
+            // for (int i = 0; i < 4; i++)
+            // {
+            //     if(pokemonInfo.moves.Length > 4)
+            //     {
+            //         if (i+1 <= pokemonInfo.moves.Length)
+            //         {
+            //             MoveData moveData = new MoveData();
+            //             moveData.name = pokemonInfo.moves[i].move.name;
+            //             StartCoroutine(GetMoveDataAndSaveEnemy(moveData, pokemonInfo.moves[i].move.url, pokeInfoCustom.pokeMoves, i));
+            //         }
+            //         else if(pokemonInfo.moves.Length <= 3)
+            //         {
+            //             MoveData moveData = new MoveData();
+            //             moveData.name = "--";
+            //             moveData.pp = 0;
+            //             moveData.type = " ";
+            //             pokeInfoCustom.pokeMoves[i] = moveData;
+            //         }
+            //     }
+            // }
         }
         else
         {
             Debug.Log("Erro: " + request.error);
+            ErrorPanelShow();
         }
     }
     
-    IEnumerator UpdateSprite(string url, Image targetImage)
+    IEnumerator UpdateSpritePlayer(string url, Image targetImage)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
         yield return request.SendWebRequest();
@@ -137,13 +173,33 @@ public class PokemonsPicker : MonoBehaviour
             Texture2D texture = DownloadHandlerTexture.GetContent(request);
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
             targetImage.sprite = sprite;
+            playerImageDone = true;
         }
         else
         {
             Debug.Log("Erro: " + request.error);
+            ErrorPanelShow();
         }
     }
-    IEnumerator GetMoveDataAndSave(MoveData getMoveData, string url, List<MoveData> saveMoveData, int index)
+    IEnumerator UpdateSpriteEnemy(string url, Image targetImage)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        yield return request.SendWebRequest();
+
+        if(request.result == UnityWebRequest.Result.Success)
+        {
+            Texture2D texture = DownloadHandlerTexture.GetContent(request);
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            targetImage.sprite = sprite;
+            enemyImageDone = true;
+        }
+        else
+        {
+            Debug.Log("Erro: " + request.error);
+            ErrorPanelShow();
+        }
+    }
+    IEnumerator GetMoveDataAndSavePlayer(MoveData getMoveData, string url, List<MoveData> saveMoveData, int index)
     {
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
@@ -154,12 +210,34 @@ public class PokemonsPicker : MonoBehaviour
             getMoveData.pp = moveStats.pp;
             getMoveData.type = moveStats.type.name;
             saveMoveData[index] = getMoveData;
+            fightOverlay.moveTexts[index].text = saveMoveData[index].name.ToUpper();
+            playerMoveDone = true;
         }
         else
         {
             Debug.Log("Erro: " + request.error);
+            ErrorPanelShow();
         }
     }
+
+    // IEnumerator GetMoveDataAndSaveEnemy(MoveData getMoveData, string url, List<MoveData> saveMoveData, int index)
+    // {
+    //     UnityWebRequest request = UnityWebRequest.Get(url);
+    //     yield return request.SendWebRequest();
+
+    //     if(request.result == UnityWebRequest.Result.Success)
+    //     {
+    //         MoveStats moveStats = JsonUtility.FromJson<MoveStats>(request.downloadHandler.text);
+    //         getMoveData.pp = moveStats.pp;
+    //         getMoveData.type = moveStats.type.name;
+    //         saveMoveData[index] = getMoveData;
+    //         enemyMoveDone = true;
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Erro: " + request.error);
+    //     }
+    // }
 
     [System.Serializable]
     public class PokeData
@@ -167,8 +245,22 @@ public class PokemonsPicker : MonoBehaviour
         public string name;
         public Sprites sprites;
         public MoveWrapper[] moves;
+        public StatInfo[] stats;
     }
     
+    [System.Serializable]
+    public class StatInfo
+    {
+        public int base_stat;
+        public Stat stat;
+    }
+
+    [System.Serializable]
+    public class Stat
+    {
+        public string name;
+    }
+
     [System.Serializable]
     public class Sprites
     {
@@ -211,6 +303,8 @@ public class PokemonsPicker : MonoBehaviour
         public Sprites user_back;
         public string front_url;
         public string back_url;
+        public int level;
+        public int hp;
     }
 
     [System.Serializable]

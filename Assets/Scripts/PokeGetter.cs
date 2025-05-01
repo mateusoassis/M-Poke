@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class PokeGetter : MonoBehaviour
 {
     [SerializeField] private string url = "https://pokeapi.co/api/v2/pokemon/";
-    public pokemonInfoCustom pokeInfoCustom;
+    public PokemonInfoCustom pokeInfoCustom;
     public int randomPokemonIndex;
 
     [System.Serializable]
@@ -55,7 +55,7 @@ public class PokeGetter : MonoBehaviour
     }
 
     [System.Serializable]
-    public class pokemonInfoCustom
+    public class PokemonInfoCustom
     {
         public string pokeName;
         public List<MoveData> pokeMoves;

@@ -1,14 +1,58 @@
 using UnityEngine;
+using System.Collections;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ui_mainBattleOverlayManager : MonoBehaviour
 {
+    [SerializeField] private Fade fadeIn;
+    [SerializeField] private GameObject fadeOutObject;
     [SerializeField] private GameObject[] setas;
     [SerializeField] private GameObject fightOverlayObject;
     [SerializeField] private int index;
+    [SerializeField] private PokemonsPicker pokeData;
+    [SerializeField] private TextMeshProUGUI flavorBattleText;
 
-    void Start()
+    [Header("Player")]
+    [SerializeField] private TextMeshProUGUI playerPokemonName;
+    [SerializeField] private TextMeshProUGUI playerPokemonLevel;
+    [SerializeField] private TextMeshProUGUI playerPokemonHp;
+
+    [Header("Enemy")]
+    [SerializeField] private TextMeshProUGUI enemyPokemonName;
+    [SerializeField] private TextMeshProUGUI enemyPokemonLevel;
+
+    void Awake()
     {
+        StartCoroutine(WaitForBattleReady());
+    }
+    
+    IEnumerator WaitForBattleReady()
+    {
+        while(!PokemonBattleReady())
+        {
+            yield return null;
+        }
         UpdateArrows();
+        UpdateStats();
+        StartCoroutine(fadeIn.FadeNow()); //fade in
+        fadeOutObject.SetActive(false);
+    }
+
+    public void UpdateStats()
+    {
+        playerPokemonName.text = pokeData.pokeInfoCustomPlayer.pokeName.ToUpper();
+        playerPokemonLevel.text = "Lv" + pokeData.pokeInfoCustomPlayer.level.ToString();
+        playerPokemonHp.text = pokeData.pokeInfoCustomPlayer.hp.ToString() + "/" + pokeData.pokeInfoCustomPlayer.hp.ToString();
+        flavorBattleText.text = "What will \n" + pokeData.pokeInfoCustomPlayer.pokeName.ToUpper() + " do?";
+
+        enemyPokemonName.text = pokeData.pokeInfoCustomEnemy.pokeName.ToUpper();
+        enemyPokemonLevel.text = "Lv" + pokeData.pokeInfoCustomEnemy.level.ToString();
+    }
+
+    public bool PokemonBattleReady()
+    {
+        return pokeData.playerImageDone && pokeData.playerMoveDone && pokeData.enemyImageDone;
     }
 
     void Update()
