@@ -30,6 +30,7 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 - 🔁 Fade-out reverso ao pressionar barra de espaço, recarregando a cena com novos Pokémon aleatórios
 - 🧪 Compatível com Pokémon que possuem menos de 4 movimentos (ex: Ditto)
 - 🧩 Estrutura modular preparada para futuras extensões, como sumário e barra de HP dinâmica
+- 🌄 Randomização de tiles/background de batalha
 
 ---
 
@@ -60,7 +61,6 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 - Alguns recursos adicionais estão planejados como extras, como:
   - HP atual randômico com atualização visual na barra
   - Tela de sumário com EXP e detalhes adicionais
-  - Randomização de tiles/background de batalha
 
 ---
 
