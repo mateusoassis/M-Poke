@@ -45,7 +45,24 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 
 ---
 
-## 🔄 Como testar
+---
+
+## 🖥️ Build para Windows
+
+Uma versão executável está disponível no repositório para facilitar testes, localizada na pasta [`Builds/Build_Windows`](./Builds/Build_Windows).
+
+Você pode:
+
+- Baixar diretamente a pasta compactada: [`Build_Windows.rar`](./Builds/Build_Windows.rar)
+- Ou navegar até a pasta `Build_Windows` e executar o arquivo `UnityPokeBattlePrototype.exe`
+
+### Como jogar:
+- Pressione a **barra de espaço** para randomizar os Pokémon
+- Use as **setas do teclado** ou **o mouse** para navegar pelos menus
+
+---
+
+## 🔄 Como testar via Unity
 
 1. Clonar o repositório
 2. Abrir o projeto no Unity
