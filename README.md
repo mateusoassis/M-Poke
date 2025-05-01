@@ -29,7 +29,7 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 - 🎨 Animação de fade-in com dois overlays hemisféricos (superior e inferior), retraindo radialmente de 0.5 para 0 — simulando uma Pokébola se abrindo
 - 🔁 Fade-out reverso ao pressionar barra de espaço, recarregando a cena com novos Pokémon aleatórios
 - 🧪 Compatível com Pokémon que possuem menos de 4 movimentos (ex: Ditto)
-- 🧩 Estrutura modular preparada para futuras extensões, como sumário e barra de HP dinâmica
+- 🧩 Estrutura modular preparada para futuras extensões, como sumário
 - 🌄 Randomização de tiles/background de batalha
 - ❤️ HP atual randômico com atualização visual da barra (verde, amarela e vermelha)
 
