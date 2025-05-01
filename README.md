@@ -49,7 +49,7 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 
 1. Clonar o repositório
 2. Abrir o projeto no Unity
-3. Executar a cena `BattleScene`
+3. Executar a cena `MainScene`
 4. Pressionar **barra de espaço** para simular fade-out e carregar novos Pokémon aleatórios
 5. Navegue através de setas do teclado e/ou clique do mouse
 
