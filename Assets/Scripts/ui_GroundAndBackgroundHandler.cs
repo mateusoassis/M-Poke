@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GroundAndBackgroundHandler : MonoBehaviour
+public class ui_GroundAndBackgroundHandler : MonoBehaviour
 {
     [System.Serializable]
     public class CustomGround
