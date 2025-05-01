@@ -31,6 +31,7 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 - 🧪 Compatível com Pokémon que possuem menos de 4 movimentos (ex: Ditto)
 - 🧩 Estrutura modular preparada para futuras extensões, como sumário e barra de HP dinâmica
 - 🌄 Randomização de tiles/background de batalha
+- ❤️ HP atual randômico com atualização visual da barra (verde, amarela e vermelha)
 
 ---
 
@@ -59,7 +60,6 @@ A abertura da cena simula uma Pokébola se abrindo, utilizando dois overlays hem
 - As opções “Bag” e “Run” foram desativadas, com espaço reservado para mensagens de erro
 - A implementação de combate, sons ou animações de ataque **não foi solicitada** e foi intencionalmente omitida
 - Alguns recursos adicionais estão planejados como extras, como:
-  - HP atual randômico com atualização visual na barra
   - Tela de sumário com EXP e detalhes adicionais
 
 ---

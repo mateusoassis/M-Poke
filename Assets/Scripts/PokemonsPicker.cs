@@ -13,6 +13,9 @@ public class PokemonsPicker : MonoBehaviour
     [SerializeField] private Fade fadeOut;
     [SerializeField] private ui_fightOverlay fightOverlay;
     [SerializeField] private string url = "https://pokeapi.co/api/v2/pokemon/";
+    [SerializeField] private Sprite greenHpBar;
+    [SerializeField] private Sprite yellowHpBar;
+    [SerializeField] private Sprite redHpBar;
     [Header("Player")]
     [SerializeField] private int playerPokemonIndex;
     [SerializeField] private string playerUrl;
@@ -20,6 +23,7 @@ public class PokemonsPicker : MonoBehaviour
     [SerializeField] private Image playerImage;
     public bool playerMoveDone = false;
     public bool playerImageDone = false;
+    [SerializeField] private Image playerHpImage;
 
     [Header("Enemy")]
     [SerializeField] private int enemyPokemonIndex;
@@ -28,6 +32,7 @@ public class PokemonsPicker : MonoBehaviour
     [SerializeField] private Image enemyImage;
     public bool enemyMoveDone = false;
     public bool enemyImageDone = false;
+    [SerializeField] private Image enemyHpImage;
 
     void Awake()
     {
@@ -54,12 +59,14 @@ public class PokemonsPicker : MonoBehaviour
         playerUrl = url + playerPokemonIndex;
         pokeInfoCustomPlayer.level = Random.Range(10, 91);
         pokeInfoCustomPlayer.hp = 0;
+        pokeInfoCustomPlayer.currentHp = 0;
 
         pokeInfoCustomEnemy.pokeMoves = new List<MoveData>{null, null, null, null};
         enemyPokemonIndex = Random.Range(1,601);
         enemyUrl = url + enemyPokemonIndex;
         pokeInfoCustomEnemy.level = Random.Range(10, 91);
         pokeInfoCustomEnemy.hp = 0;
+        pokeInfoCustomEnemy.currentHp = 0;
 
         StartCoroutine(GetPokeDataPlayer(playerUrl, pokeInfoCustomPlayer, playerImage));
         StartCoroutine(GetPokeDataEnemy(enemyUrl, pokeInfoCustomEnemy, enemyImage));
@@ -83,6 +90,21 @@ public class PokemonsPicker : MonoBehaviour
                 if(stat_line.stat.name == "hp")
                 {
                     pokeInfoCustomPlayer.hp = (int)((2 * stat_line.base_stat * pokeInfoCustom.level)/100) + pokeInfoCustom.level + 10;
+                    pokeInfoCustomPlayer.currentHp = Random.Range(1,pokeInfoCustomPlayer.hp+1);
+                    float newFillAmount = (float)pokeInfoCustomPlayer.currentHp / pokeInfoCustomPlayer.hp;
+                    playerHpImage.fillAmount = newFillAmount;
+                    if(newFillAmount > 0.5f)
+                    {
+                        playerHpImage.sprite = greenHpBar;
+                    }
+                    else if(newFillAmount > 0.25f)
+                    {
+                        playerHpImage.sprite = yellowHpBar;
+                    }
+                    else
+                    {
+                        playerHpImage.sprite = redHpBar;
+                    }
                     break;
                 }
             }
@@ -131,6 +153,21 @@ public class PokemonsPicker : MonoBehaviour
                 if(stat_line.stat.name == "hp")
                 {
                     pokeInfoCustomEnemy.hp = (int)((2 * stat_line.base_stat)/100) + pokeInfoCustom.level + 10;
+                    pokeInfoCustomEnemy.currentHp = Random.Range(1,pokeInfoCustomEnemy.hp+1);
+                    float newFillAmount = (float)pokeInfoCustomEnemy.currentHp / pokeInfoCustomEnemy.hp;
+                    enemyHpImage.fillAmount = newFillAmount;
+                    if(newFillAmount > 0.5f)
+                    {
+                        enemyHpImage.sprite = greenHpBar;
+                    }
+                    else if(newFillAmount > 0.25f)
+                    {
+                        enemyHpImage.sprite = yellowHpBar;
+                    }
+                    else
+                    {
+                        enemyHpImage.sprite = redHpBar;
+                    }
                     break;
                 }
             }
@@ -305,6 +342,7 @@ public class PokemonsPicker : MonoBehaviour
         public string back_url;
         public int level;
         public int hp;
+        public int currentHp;
     }
 
     [System.Serializable]

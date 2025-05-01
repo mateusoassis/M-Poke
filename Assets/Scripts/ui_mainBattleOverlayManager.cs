@@ -43,7 +43,7 @@ public class ui_mainBattleOverlayManager : MonoBehaviour
     {
         playerPokemonName.text = pokeData.pokeInfoCustomPlayer.pokeName.ToUpper();
         playerPokemonLevel.text = "Lv" + pokeData.pokeInfoCustomPlayer.level.ToString();
-        playerPokemonHp.text = pokeData.pokeInfoCustomPlayer.hp.ToString() + "/" + pokeData.pokeInfoCustomPlayer.hp.ToString();
+        playerPokemonHp.text = pokeData.pokeInfoCustomPlayer.currentHp.ToString() + "/" + pokeData.pokeInfoCustomPlayer.hp.ToString();
         flavorBattleText.text = "What will \n" + pokeData.pokeInfoCustomPlayer.pokeName.ToUpper() + " do?";
 
         enemyPokemonName.text = pokeData.pokeInfoCustomEnemy.pokeName.ToUpper();

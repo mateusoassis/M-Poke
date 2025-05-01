@@ -1168,10 +1168,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 1287245389, guid: 078b9de03cbba844cb63c4bdd0c411dc, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -3172,6 +3172,9 @@ MonoBehaviour:
   fadeOut: {fileID: 1081684939}
   fightOverlay: {fileID: 451238635}
   url: https://pokeapi.co/api/v2/pokemon/
+  greenHpBar: {fileID: 1287245389, guid: 078b9de03cbba844cb63c4bdd0c411dc, type: 3}
+  yellowHpBar: {fileID: 930183000, guid: 078b9de03cbba844cb63c4bdd0c411dc, type: 3}
+  redHpBar: {fileID: -1736628871, guid: 078b9de03cbba844cb63c4bdd0c411dc, type: 3}
   playerPokemonIndex: 0
   playerUrl: 
   pokeInfoCustomPlayer:
@@ -3187,9 +3190,11 @@ MonoBehaviour:
     back_url: 
     level: 0
     hp: 0
+    currentHp: 0
   playerImage: {fileID: 707577563}
   playerMoveDone: 0
   playerImageDone: 0
+  playerHpImage: {fileID: 329759168}
   enemyPokemonIndex: 0
   enemyUrl: 
   pokeInfoCustomEnemy:
@@ -3205,9 +3210,11 @@ MonoBehaviour:
     back_url: 
     level: 0
     hp: 0
+    currentHp: 0
   enemyImage: {fileID: 614318127}
   enemyMoveDone: 0
   enemyImageDone: 0
+  enemyHpImage: {fileID: 1438731434}
 --- !u!1 &1078024972
 GameObject:
   m_ObjectHideFlags: 0
@@ -4500,10 +4507,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 1287245389, guid: 078b9de03cbba844cb63c4bdd0c411dc, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
